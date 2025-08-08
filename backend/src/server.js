@@ -7,7 +7,7 @@ import { connectDB } from "./lib/db.js";
 dotenv.config();
 
 // Puerto
-const PORT=process.env.PORT
+const PORT=process.env.PORT;
 
 const app = express();
 
