@@ -17,8 +17,6 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const User = mongoose.model("User", userSchema); // Creamos la colección User con la estructura de userSchema
-
 // Hashear contraseña de usuarios antes de guardar en MongoDB
 userSchema.pre("save", async function(next) {
     // Si la contraseña no fue modificada, continuar sin hacer nada
@@ -36,5 +34,7 @@ userSchema.pre("save", async function(next) {
         next(error);
     }
 });
+
+const User = mongoose.model("User", userSchema); // Creamos la colección User con la estructura de userSchema
 
 export default User; // Habilitamos el uso de User en otros archivos
