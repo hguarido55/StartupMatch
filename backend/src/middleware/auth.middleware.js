@@ -15,10 +15,10 @@ export const protectRoute = async (req, res, next) => {
             return res.status(401).json({ message: "Error - Token de autenticación inválido" });
         }
 
-        const user = await User.findById(decoded.userId).select("-password");
+        const user = await User.findById(decoded.userID).select("-password");
 
         if(!user) {
-            return res.status(401).json({ message: "Error - Usuario no encontrado" });
+            return res.status(401).json({ message: "Error - Usuario no encontrado - Middleware" });
         }
 
         req.user = user;
