@@ -35,6 +35,12 @@ userSchema.pre("save", async function(next) {
     }
 });
 
+// Función para comparar contraseña introducida por usuario al hacer login con la contraseña correspondiente hasheada en MongoDB
+userSchema.methods.matchPassword = async function (enteredPassword) {
+    const isPasswordCorrect = await bcrypt.compare(enteredPassword, this.password);
+    return isPasswordCorrect;
+};
+
 const User = mongoose.model("User", userSchema); // Creamos la colección User con la estructura de userSchema
 
 export default User; // Habilitamos el uso de User en otros archivos

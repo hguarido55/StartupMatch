@@ -63,7 +63,45 @@ export async function signup(req, res) {
 }
 
 export async function login(req, res) {
-    res.send("Login");
+    try {
+        const {email, password} = req.body;
+
+        if(!email || !password) {
+            return res.status(400).json({ message: "Rellena todos los campos" });
+        }
+
+        // Comprobamos que el email introducido por el usuario existe
+        const usuario = await User.findOne({ email });
+        if(!usuario) {
+            return res.status(401).json({ message: "Email o contraseña inválidos" });
+        }
+
+        // Comprobamos que la contraseña introducida por el usuario existe
+        const existeContrasena = await usuario.matchPassword(password);
+
+        if(!existeContrasena) {
+            return res.status(401).json({ message: "Email o contraseña inválidos" });
+        }
+
+        // A partir de aqui el usuario ha introducido correctamente sus credenciales
+        const token = jwt.sign({userID:nuevoUsuario._id}, process.env.JWT_SECRET_KEY, {
+            expiresIn: "7d"
+        });
+
+        res.cookie("jwt", token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production"
+        });
+
+        // Éxito
+        res.status(200).json({ success: true, user: usuario});
+
+    } catch (error) {
+        console.log("Error al iniciar sesión", error.message);
+        res.status(500).json({ success: false, message: "Error al iniciar sesión" });
+    }
 }
 
 export function logout(req, res) {
