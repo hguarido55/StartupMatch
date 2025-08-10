@@ -53,6 +53,9 @@ La plataforma facilita la creación de redes, el desarrollo de proyectos conjunt
 - **Mailtrap** *(futuro)* – Testing de correos electrónicos.
 - **OAuth** *(futuro)* – Autenticación con proveedores externos.
 
+## Pruebas 
+- **Postman** - Durante el desarrollo local se utilizó Postman para probar y depurar los endpoints de la API, ejecutando y verificando peticiones HTTP (GET, POST, PUT, DELETE, etc.) de forma rápida antes de su integración con el frontend.
+
 ---
 
 🌍 Despliegue
