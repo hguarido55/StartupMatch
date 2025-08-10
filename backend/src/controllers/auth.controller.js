@@ -1,3 +1,4 @@
+import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
@@ -40,6 +41,17 @@ export async function signup(req, res) {
             password,
             profilePic: randomAvatar,
         });
+
+        try {
+            await upsertStreamUser({
+            id:nuevoUsuario._id.toString(),
+            name: nuevoUsuario.fullName,
+            image: nuevoUsuario.profilePic || "",
+        });
+            console.log(`Usuario creado en Stream: ${nuevoUsuario.fullName}`);
+        } catch (error) {
+            console.log("Error al crear usuario en Stream:", error);
+        }
 
         // JWT
         const token = jwt.sign({userID:nuevoUsuario._id}, process.env.JWT_SECRET_KEY, {
@@ -84,7 +96,7 @@ export async function login(req, res) {
         }
 
         // A partir de aqui el usuario ha introducido correctamente sus credenciales
-        const token = jwt.sign({userID:nuevoUsuario._id}, process.env.JWT_SECRET_KEY, {
+        const token = jwt.sign({userID:usuario._id}, process.env.JWT_SECRET_KEY, {
             expiresIn: "7d"
         });
 
