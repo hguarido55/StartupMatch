@@ -105,5 +105,6 @@ export async function login(req, res) {
 }
 
 export function logout(req, res) {
-    res.send("Logout");
+    res.clearCookie("jwt");
+    res.status(200).json({ success: true, message: "Cierre de sesión exitoso" })
 }
