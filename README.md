@@ -1,7 +1,7 @@
 # 🚀 StartupMatch
 
 **StartupMatch** es una aplicación web full-stack creada con **MERN** que conecta a emprendedores, CEOs y equipos de startups con desarrolladores y profesionales interesados en colaborar.  
-La plataforma facilita la creación de redes, el desarrollo de proyectos conjuntos y la comunicación directa mediante chat y videollamadas.
+La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación directa mediante chat y videollamadas.
 
 > ⚠️ **Estado del proyecto:** En desarrollo.
 
@@ -13,6 +13,7 @@ La plataforma facilita la creación de redes, el desarrollo de proyectos conjunt
 - **Autenticación segura:**  
   - JWT (JSON Web Token) para la gestión de sesiones.  
   - `bcrypt` para el hash seguro de contraseñas.  
+  - Middleware para validar autenticación
 - **Comunicación en tiempo real:** Integración con [getstream.io](https://getstream.io) para chats y videollamadas.
 - **Base de datos NoSQL:** MongoDB para almacenamiento de datos de usuarios, proyectos y conversaciones.
 - **Despliegue en la nube:** Utiliza [Render](https://render.com) para la puesta en producción.
@@ -37,7 +38,6 @@ La plataforma facilita la creación de redes, el desarrollo de proyectos conjunt
 
 ### Frontend
 - **React.js** – Framework de JavaScript para construir interfaces de usuario.
-- **CSS / Tailwind CSS** (opcional según desarrollo) – Estilos responsivos y personalizables.
 
 ### Backend
 - **Node.js** – Entorno de ejecución de JavaScript en el servidor.
