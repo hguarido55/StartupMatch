@@ -120,3 +120,7 @@ export function logout(req, res) {
     res.clearCookie("jwt");
     res.status(200).json({ success: true, message: "Cierre de sesión exitoso" })
 }
+
+export async function onboard(req, res) {
+    console.log(req.user);
+}
