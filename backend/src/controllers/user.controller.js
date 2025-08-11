@@ -1,3 +1,4 @@
+import FriendRequest from "../models/FriendRequest.js";
 import User from "../models/User.js";
 
 export async function getRecommendedUsers (req, res) {
@@ -32,5 +33,48 @@ export async function getMyFriends (req, res) {
 };
 
 export async function sendFriendRequest (req, res) {
-    
+    try {
+        const myId = req.user.id;
+        const { id:recipientId } = req.params; // ID del recipiente, obtenido del id de la ruta: /friend-request/:id
+
+        // Comprobar que la solicitud de amistad no sea al propio usuario
+        if(myId === recipientId) {
+            return res.status(400).json({ message: "Error - No puedes enviar una solicitud de amistad a ti mismo" });
+        }
+
+        // Comprobar si el ID del recipiente existe en MongoDB
+        const recipient = await User.findById(recipientId);
+        if(!recipient) {
+            return res.status(404).json({ message: "Error - Usuario recipiente no encontrado" });
+        }
+
+        // Comprobar si el recipiente ya es amigo del usuario
+        if(recipient.friends.includes(myId)) {
+            return res.status(400).json({ message: "Error - Ya eres amigo de este usuario" });
+        }
+
+        // Comprobar si ya existe una solicitud de amistad entre los usuarios
+        const existingRequest = await FriendRequest.findOne({
+            $or: [
+                {sender: myId, recipient: recipientId},
+                {sender: recipientId, recipient: myId},
+            ],
+        });
+
+        if(existingRequest) {
+            return res.status(400).json({ message: "Ya existe una solicitud de amistad entre estos usuarios" });
+        }
+
+        // Creamos la solicitud de amistad y la guardamos en MongoDB
+        const friendRequest = await FriendRequest.create({
+            sender: myId,
+            recipient: recipientId,
+        });
+
+        res.status(201).json(friendRequest);
+
+    } catch (error) {
+        console.error("Error al procesar la solicitud de amistad", error.message);
+        return res.status(500).json({ message: "Error en el procesamiento de la solicitud de amistad" });
+    }
 };
