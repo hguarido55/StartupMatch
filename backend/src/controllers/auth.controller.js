@@ -153,6 +153,18 @@ export async function onboard(req, res) {
         return res.status(404).json({ message: "User not found" });
     }
 
+    // Actualizar información de onboarding de usuario en Stream
+    try {
+        await upsertStreamUser({
+            id: updatedUser._id.toString(),
+            name: updatedUser.fullName,
+            image: updatedUser.profilePic,
+        });
+    } catch (streamError) {
+        console.log("Error al actualizar el usuario en Stream:", streamError.message);
+    }
+
+    // Éxito
     res.status(200).json({ success: true, user: updatedUser });
     
   } catch (error) {
