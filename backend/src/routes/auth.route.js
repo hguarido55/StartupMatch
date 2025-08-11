@@ -9,7 +9,12 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 
-// Ruta de onboarding page
+// Ruta de onboarding page protegida por middleware
 router.post("/onboarding", protectRoute, onboard);
 
-export default router
+// Ruta para devolver datos del usuario autenticado
+router.get("/me", protectRoute, (req, res) => {
+    res.status(200).json({ success: true, user: req.user });
+});
+
+export default router;

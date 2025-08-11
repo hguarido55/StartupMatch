@@ -6,7 +6,7 @@ export const protectRoute = async (req, res, next) => {
         const token = req.cookies.jwt;
 
         if(!token) {
-            return res.status(401).json({ message: "Error de autenticación"});
+            return res.status(401).json({ message: "Error de autenticación - No hay token"});
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
