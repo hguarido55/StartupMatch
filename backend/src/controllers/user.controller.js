@@ -12,13 +12,21 @@ export async function getRecommendedUsers (req, res) {
                 {isOnboarded: true} // Únicamente usuarios que estan oboarded (han completado la página de información adicional)
             ]
         });
-        res.status(200).json({ success: true, recommendedUsers});
+        res.status(200).json(recommendedUsers);
     } catch (error) {
         console.error("Error al cargar usuarios recomendados", error.message);
-        res.status(500).json({ success: false, message: "Error en la recomendación de usuarios" });
+        res.status(500).json({ message: "Error en la recomendación de usuarios" });
     }
 };
 
 export async function getMyFriends (req, res) {
+    try {
+        const user = await User.findById(req.user.id).select("friends")
+        .populate("friends","fullName profilePic nativeLanguage learningLanguage");
 
+        res.status(200).json(user.friends);
+    } catch (error) {
+        console.error("Error al cargar los usuarios amigos", error.message);
+        res.status(500).json({ message: "Error interno al cargar los amigos" });
+    }
 };
