@@ -30,3 +30,7 @@ export async function getMyFriends (req, res) {
         res.status(500).json({ message: "Error interno al cargar los amigos" });
     }
 };
+
+export async function sendFriendRequest (req, res) {
+    
+};
