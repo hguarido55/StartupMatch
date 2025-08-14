@@ -113,3 +113,25 @@ export async function acceptFriendRequest (req, res) {
         return res.status(500).json({ message: "Error - No se pudo aceptar la solicitud de amistad" });
     }
 };
+
+// Página de notificaciones con solicitudes de amistad pendientes y aceptadas
+export async function getFriendRequests (req, res) {
+    try {
+        // Obtenemos todas las solicitudes de amistad en estado pendiente y la información de cada usuario
+        const incomingReqs = await FriendRequest.find({
+            recipient: req.user.id,
+            status: "pending",
+        }).populate("sender", "fullName profilePic nativeLanguage learningLanguage");
+
+        // Obtenemos todas las solicitudes de amistad en estado aceptado y la información de cada usuario
+        const acceptedReqs = await FriendRequest.find({
+            recipient: req.user.id,
+            status: "accepted"
+        }).populate("sender", "fullName profilePic");
+
+        res.status(200).json({ incomingReqs, acceptedReqs});
+    } catch (error) {
+        console.log("Error al cargar las solicitudes de amistad", error.message);
+        res.status(500).json({ message: "Error con las solicitudes de amistad" });
+    }
+};
