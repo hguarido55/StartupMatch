@@ -129,9 +129,24 @@ export async function getFriendRequests (req, res) {
             status: "accepted"
         }).populate("sender", "fullName profilePic");
 
-        res.status(200).json({ incomingReqs, acceptedReqs});
+        res.status(200).json(incomingReqs, acceptedReqs);
     } catch (error) {
         console.log("Error al cargar las solicitudes de amistad", error.message);
         res.status(500).json({ message: "Error con las solicitudes de amistad" });
+    }
+};
+
+// Obtener las solicitudes de amistad enviadas (pendientes) que han sido enviadas por el usuario
+export async function getOutgoingFriendReqs (req, res) {
+    try {
+        const outgoingRequests = await FriendRequest.find({
+            sender: req.user.id,
+            status: "pending",
+        }).populate("recipient", "fullName profilePic nativeLanguage learningLanguage");
+
+        res.status(200).json(outgoingRequests);
+    } catch (error) {
+        console.log("Error al obtener las solicitudes de amistad enviadas", error.message);
+        res.status(500).json({ message: "Error interno" });
     }
 };
