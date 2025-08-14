@@ -19,6 +19,7 @@ app.use(cookieParser());
 // Rutas
 app.use("/api/auth", authRoutes); // Autenticación
 app.use("/api/user", userRoutes); // Páginas de usuario
+app.use("/api/chat", chatRoutes); // Páginas de chats
 
 app.listen(PORT, () => {
     console.log(`Servidor abierto en el puerto ${PORT}`);
