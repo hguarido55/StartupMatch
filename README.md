@@ -38,6 +38,8 @@ La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación d
 
 ### Frontend
 - **React.js** – Framework de JavaScript para construir interfaces de usuario.
+- **Tailwind CSS** – Framework CSS utility-first para diseñar interfaces rápidas y personalizables.
+- **DaisyUI** – Biblioteca de componentes basada en Tailwind CSS para crear interfaces modernas de forma sencilla.
 
 ### Backend
 - **Node.js** – Entorno de ejecución de JavaScript en el servidor.
