@@ -11,23 +11,23 @@ export async function signup(req, res) {
     // Comprobamos posibles errores
     try {
         if(!email || !password || ! fullName) {
-            return res.status(400).json({ message: "Rellena todos los campos" });
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         if(password.length < 6) {
-            return res.status(400).json({ message: "La contraseña debe tener como mínimo 6 caracteres" });
+            return res.status(400).json({ message: "The password must contain at least 6 characters" });
         }
 
         // Formato de email válido
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ message: "Formato de email inválido" });
+            return res.status(400).json({ message: "Invalid email format" });
         }
 
         // Si el usuario ya existe ('email' es 'unique' en models/User.js)
         const usuarioExiste = await User.findOne({ email });
         if(usuarioExiste) {
-            return res.status(400).json({ message: "El email introducido ya tiene cuenta asociada" });
+            return res.status(400).json({ message: "This email is already being used" });
         }
 
         // Generamos un número de 1 a 100 y generamos una foto de perfil aleatoria usando 'Avatar Placeholder'
