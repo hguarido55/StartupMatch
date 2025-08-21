@@ -3,7 +3,7 @@ import useAuthUser from '../hooks/useAuthUser';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { completeOnboarding } from '../lib/api';
 import toast from 'react-hot-toast';
-import { CameraIcon, ShuffleIcon } from 'lucide-react';
+import { CameraIcon, LoaderIcon, MapPinIcon, Send, ShuffleIcon } from 'lucide-react';
 import { LANGUAGES } from '../constants';
 
 const OnboardingPage = () => {
@@ -24,6 +24,10 @@ const OnboardingPage = () => {
     onSuccess: () => {
       toast.success("Profile onboarded successfully");
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    },
+
+    onError: (error) => {
+      toast.error(error.response.data.message);
     }
   });
 
@@ -32,7 +36,13 @@ const OnboardingPage = () => {
     onboardingMutation(formState);
   }
 
-  const handleRandomAvatar = () => {};
+  const handleRandomAvatar = () => {
+    const idx = Math.floor(Math.random() * 100) + 1;
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+    
+    setFormState({ ...formState, profilePic: randomAvatar });
+    toast.success("Avatar changed successfully!");
+  };
 
   return (
     <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
@@ -81,14 +91,14 @@ const OnboardingPage = () => {
                 <label className="label">
                   <span className="label-text">Bio</span>
                 </label>
-                <input
+                <textarea
                   name="bio"
                   value={formState.bio}
                   onChange={(e) => setFormState({ ...formState, bio: e.target.value })}
                   className="textarea textarea-bordered h-24"
-                  placeholder="Tell others about yourself and your goals"
+                  placeholder="Tell others about yourself and your language learning goals"
                 />
-              </div>
+            </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -129,12 +139,39 @@ const OnboardingPage = () => {
                     ))}
                   </select>
                 </div>
-
               </div>
 
-              <div>
-                
+              <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Location</span>
+                  </label>
+                  <div className="relative">
+                    <MapPinIcon className="absolute top-1/2 transform -translate-y-1/2 left-3 size-5
+                    text-base-content opacity-70" />
+                    <input 
+                      type="text"
+                      name="location"
+                      value={formState.location}
+                      onChange={(e) => setFormState({ ...formState, location: e.target.value }) }
+                      className="input input-bordered w-full pl-10"
+                      placeholder="City, Country"
+                    />
+                  </div>
               </div>
+
+              <button className="btn btn-primary w-full" disabled={isPending} type="submit">
+                {!isPending ? (
+                  <>
+                    <Send className="size-5 mr-2" />
+                    Complete Onboarding
+                  </>
+                ) : (
+                  <>
+                    <LoaderIcon className="animate-spin size-5 mr-2" />
+                    Onboarding...
+                  </>
+                )}
+              </button>
 
           </form>
         </div>
