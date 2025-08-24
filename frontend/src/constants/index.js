@@ -179,6 +179,51 @@ export const LANGUAGES = [
   "Dutch",
 ];
 
+// Para StartupMatch
+/*
+export const OCCUPATIONS = [
+  "CEO / Founder",
+  "Co-Founder",
+  "CTO",
+  "Product Manager",
+  "Software Engineer / Developer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "UI/UX Designer",
+  "Data Scientist / ML Engineer",
+  "DevOps / Cloud Engineer",
+  "Marketing / Growth",
+  "Sales / Biz Dev",
+  "Investor / Angel",
+  "Student / Aspiring Tech Professional",
+  "Other",
+];
+*/
+
+/*
+export const INTERESTS = [
+  "Artificial Intelligence / Machine Learning",
+  "Web Development",
+  "Mobile Apps",
+  "Blockchain / Crypto",
+  "Fintech",
+  "HealthTech",
+  "EdTech",
+  "Gaming / Esports",
+  "SaaS",
+  "E-commerce",
+  "Cybersecurity",
+  "Cloud Computing / DevOps",
+  "UI/UX Design",
+  "Product Management",
+  "Startup Mentoring",
+  "Investing / Venture Capital",
+  "Networking / Collaboration",
+  "Other",
+];
+*/
+
 export const LANGUAGE_TO_FLAG = {
   english: "gb",
   spanish: "es",

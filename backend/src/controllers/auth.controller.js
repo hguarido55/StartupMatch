@@ -85,14 +85,14 @@ export async function login(req, res) {
         // Comprobamos que el email introducido por el usuario existe
         const usuario = await User.findOne({ email });
         if(!usuario) {
-            return res.status(401).json({ message: "Email o contraseña inválidos" });
+            return res.status(401).json({ message: "Invalid email or password" });
         }
 
         // Comprobamos que la contraseña introducida por el usuario existe
         const existeContrasena = await usuario.matchPassword(password);
 
         if(!existeContrasena) {
-            return res.status(401).json({ message: "Email o contraseña inválidos" });
+            return res.status(401).json({ message: "Invalid email or password" });
         }
 
         // A partir de aqui el usuario ha introducido correctamente sus credenciales

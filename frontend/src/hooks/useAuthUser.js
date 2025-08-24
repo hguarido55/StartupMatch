@@ -7,6 +7,7 @@ const useAuthUser = () => {
     queryKey: ["authUser"],
     queryFn: getAuthUser,
     retry: false,
+    refetchOnWindowFocus: false, // Cambio para que la página no haga 'refresh' cada vez
   }); 
 
   return { isLoading: authUser.isLoading, authUser: authUser.data?.user };
