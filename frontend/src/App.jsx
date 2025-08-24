@@ -23,10 +23,10 @@ const App = () => {
   }
 
   return (
-    <div className="h-screen" data-theme="night">
+    <div className="h-screen" data-theme="dracula">
       <Routes>
         <Route path="/" element={isAuthenticated && isOnboarded ? (
-          <Layout>
+          <Layout showSidebar={true}>
             <HomePage />
           </Layout>
         ) : (
