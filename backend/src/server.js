@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // Rutas
 app.use("/api/auth", authRoutes); // Autenticación
-app.use("/api/user", userRoutes); // Páginas de usuario
+app.use("/api/users", userRoutes); // Páginas de usuario
 app.use("/api/chat", chatRoutes); // Páginas de chats
 
 app.listen(PORT, () => {

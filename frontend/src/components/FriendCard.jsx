@@ -35,7 +35,7 @@ const FriendCard = ({friend}) => {
 
 export default FriendCard;
 
-function getLanguageFlag(language) {
+export function getLanguageFlag(language) {
     if(!language) {
         return null;
     }

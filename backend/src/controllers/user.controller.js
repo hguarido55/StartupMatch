@@ -1,24 +1,24 @@
 import FriendRequest from "../models/FriendRequest.js";
 import User from "../models/User.js";
 
-export async function getRecommendedUsers (req, res) {
-    try {
-        const currentUserId = req.user.id;
-        const currentUser = req.user; // También sirve: await User.findById(currentUserId)
+export async function getRecommendedUsers(req, res) {
+  try {
+    const currentUserId = req.user.id;
+    const currentUser = req.user;
 
-        const recommendedUsers = await User.find({ // Query en MongoDB para devolver usuarios recomendados
-            $and: [ // Todas las condiciones tienen que cumplirse
-                {_id: {$ne: currentUserId}}, // Descartamos el propio usuario
-                {$id: {$nin: currentUser.friends}}, // Descartamos los amigos del usuario
-                {isOnboarded: true} // Únicamente usuarios que estan oboarded (han completado la página de información adicional)
-            ]
-        });
-        res.status(200).json(recommendedUsers);
-    } catch (error) {
-        console.error("Error al cargar usuarios recomendados", error.message);
-        res.status(500).json({ message: "Error en la recomendación de usuarios" });
-    }
-};
+    const recommendedUsers = await User.find({
+      $and: [
+        { _id: { $ne: currentUserId } }, //exclude current user
+        { _id: { $nin: currentUser.friends } }, // exclude current user's friends
+        { isOnboarded: true },
+      ],
+    });
+    res.status(200).json(recommendedUsers);
+  } catch (error) {
+    console.error("Error in getRecommendedUsers controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
 
 export async function getMyFriends (req, res) {
     try {
