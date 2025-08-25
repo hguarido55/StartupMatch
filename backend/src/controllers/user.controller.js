@@ -129,7 +129,7 @@ export async function getFriendRequests (req, res) {
             status: "accepted"
         }).populate("sender", "fullName profilePic");
 
-        res.status(200).json(incomingReqs, acceptedReqs);
+        res.status(200).json({incomingReqs, acceptedReqs});
     } catch (error) {
         console.log("Error al cargar las solicitudes de amistad", error.message);
         res.status(500).json({ message: "Error con las solicitudes de amistad" });
