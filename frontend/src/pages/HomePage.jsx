@@ -8,9 +8,10 @@ import {
 } from "../lib/api.js";
 import { Link } from "react-router";
 import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
-import { capitialize } from "../lib/utils";
-import FriendCard, { getLanguageFlag } from "../components/FriendCard";
+import { capitalize } from "../lib/utils.js";
+import FriendCard from "../components/FriendCard";
 import NoFriendsFound from "../components/NoFriendsFound";
+import { LanguageFlag } from "../components/LanguageFlag.jsx";
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -124,12 +125,12 @@ const HomePage = () => {
                       {/* Languages with flags */}
                       <div className="flex flex-wrap gap-1.5">
                         <span className="badge badge-secondary">
-                          {getLanguageFlag(user.nativeLanguage)}
-                          Native: {capitialize(user.nativeLanguage)}
+                          <LanguageFlag language={user.nativeLanguage} />
+                          Native: {capitalize(user.nativeLanguage)}
                         </span>
                         <span className="badge badge-outline">
-                          {getLanguageFlag(user.learningLanguage)}
-                          Learning: {capitialize(user.learningLanguage)}
+                          <LanguageFlag language={user.learningLanguage} />
+                          Learning: {capitalize(user.learningLanguage)}
                         </span>
                       </div>
 
