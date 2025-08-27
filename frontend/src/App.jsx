@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import PageLoader from './components/PageLoader.jsx';
 import useAuthUser from './hooks/useAuthUser.js';
 import Layout from './components/Layout.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 
 const App = () => {
   const {isLoading, authUser} = useAuthUser();
@@ -58,6 +59,10 @@ const App = () => {
           )
         } />
         <Route path="/onboarding" element={isAuthenticated ? (!isOnboarded ? (<OnboardingPage />) : (<Navigate to="/" />)) : (<Navigate to="/login" />)} />
+        <Route 
+          path="/forgot-password" 
+          element={!isAuthenticated ? <ForgotPassword /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} /> } 
+        />
       </Routes>
 
       <Toaster />

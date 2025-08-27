@@ -72,6 +72,12 @@ const LoginPage = () => {
                     />
                   </div>
 
+                  <div className="flex justify-end">
+                    <Link to="/forgot-password" className="text-primary text-sm hover:underline">
+                      Forgot Password?
+                    </Link>
+                  </div>
+
                   <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
                     {isPending ? (
                       <>

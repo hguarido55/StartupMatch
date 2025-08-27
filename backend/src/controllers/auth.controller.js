@@ -1,7 +1,7 @@
 import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import emailApi from "../lib/brevo.js";
+import brevoClient from "../lib/brevo.js";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
@@ -177,10 +177,13 @@ export async function onboard(req, res) {
 }
 
 export async function forgotPassword(req, res) {
-    const {email} = req.user.email;
+    const {email} = req.body;
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
 
     try {
-        const user = await User.findOne(email);
+        const user = await User.findOne({email});
         if(!user) {
             return res.status(404).json({ message: "Email not found" });
         }
@@ -188,28 +191,33 @@ export async function forgotPassword(req, res) {
         const token = crypto.randomBytes(32).toString("hex");
         user.resetToken = token;
         user.resetTokenExpire = Date.now() + 3600000; // 1 hora
+
         await user.save();
 
-        const resetLink = `https://tu-frontend.com/reset-password/${token}`;
+        const resetLink = `http://localhost:5005/reset-password/${token}`;
 
-        const sendSmtpEmail = {
+        await brevoClient.sendTransacEmail({
             sender: { name: "StartupMatch", email: "no-reply@startupmatch.com" },
             to: [{ email: user.email }],
-            subject: "Recover your Password",
-            htmlContent: `<p>Haz click <a href="${resetLink}">aquí</a> para restablecer tu contraseña. El link es válido 1 hora.</p>`
-        };
-
-        await emailApi.sendTransacEmail(sendSmtpEmail);
+            subject: "Reset your password",
+            htmlContent: `<p>Hi ${user.fullName},</p>
+                            <p>Click <a href="${resetLink}">here</a> to reset your password. This link will expire in 1 hour.</p>`
+            });
 
         res.status(200).json({ message: "Verification email sent successfully" });
     } catch (error) {
-        console.error("Error in forgotPassword controller:", err);
+        console.error("Error in forgotPassword controller:", error);
         res.status(500).json({ message: "Unable to send verification email" });
     }
 }
 
 export async function resetPassword(req, res) {
-    const {token, newPassword} = req.body;
+    const {token} = req.params;
+    const {newPassword} = req.body;
+
+    if(!newPassword) {
+        return res.status(400).json({ message: "New password is required" });
+    }
 
     try {
         const user = await User.findOne({
@@ -228,7 +236,6 @@ export async function resetPassword(req, res) {
 
         await user.save();
         res.status(200).json({ message: "Password has been changed successfully" });
-
     } catch (error) {
         console.error("Error in resetPassword controller:", error);
         res.status(500).json({message: "Unable to reset password" });

@@ -14,7 +14,7 @@ router.post("/onboarding", protectRoute, onboard);
 
 // Recuperación de contraseñas
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password:token", resetPassword);
 
 // Ruta para devolver datos del usuario autenticado
 router.get("/me", protectRoute, (req, res) => {

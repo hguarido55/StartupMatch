@@ -1,8 +1,8 @@
-import SibApiV3Sdk from "@sendinblue/client";
+import Brevo from "@getbrevo/brevo";
 
-const defaultClient = SibApiV3Sdk.ApiClient.instance;
-defaultClient.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
+// Creamos la instancia del cliente Brevo con la API key
+const brevoClient = new Brevo.TransactionalEmailsApi({
+  apiKey: process.env.BREVO_API_KEY
+});
 
-const emailApi = new SibApiV3Sdk.TransactionalEmailsApi();
-
-export default emailApi;
+export default brevoClient;
