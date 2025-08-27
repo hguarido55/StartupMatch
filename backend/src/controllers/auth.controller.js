@@ -1,6 +1,9 @@
 import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import emailApi from "../lib/brevo.js";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
 // Lógica de funciones de autenticación (registro, login, logout)
 
@@ -171,4 +174,63 @@ export async function onboard(req, res) {
     console.error("Onboarding error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+}
+
+export async function forgotPassword(req, res) {
+    const {email} = req.user.email;
+
+    try {
+        const user = await User.findOne(email);
+        if(!user) {
+            return res.status(404).json({ message: "Email not found" });
+        }
+
+        const token = crypto.randomBytes(32).toString("hex");
+        user.resetToken = token;
+        user.resetTokenExpire = Date.now() + 3600000; // 1 hora
+        await user.save();
+
+        const resetLink = `https://tu-frontend.com/reset-password/${token}`;
+
+        const sendSmtpEmail = {
+            sender: { name: "StartupMatch", email: "no-reply@startupmatch.com" },
+            to: [{ email: user.email }],
+            subject: "Recover your Password",
+            htmlContent: `<p>Haz click <a href="${resetLink}">aquí</a> para restablecer tu contraseña. El link es válido 1 hora.</p>`
+        };
+
+        await emailApi.sendTransacEmail(sendSmtpEmail);
+
+        res.status(200).json({ message: "Verification email sent successfully" });
+    } catch (error) {
+        console.error("Error in forgotPassword controller:", err);
+        res.status(500).json({ message: "Unable to send verification email" });
+    }
+}
+
+export async function resetPassword(req, res) {
+    const {token, newPassword} = req.body;
+
+    try {
+        const user = await User.findOne({
+            resetToken: token,
+            resetTokenExpire: { $gt: Date.now() }
+        });
+
+        if(!user) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+
+        user.resetToken = undefined;
+        user.resetTokenExpire = undefined;
+
+        await user.save();
+        res.status(200).json({ message: "Password has been changed successfully" });
+
+    } catch (error) {
+        console.error("Error in resetPassword controller:", error);
+        res.status(500).json({message: "Unable to reset password" });
+    }
 }

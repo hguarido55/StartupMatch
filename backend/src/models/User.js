@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
     location: {type: String, default: ""},
     isOnboarded: {type: Boolean, default: false},
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    resetToken: { type: String },
+    resetTokenExpire: { type: Date },
 }, {
     timestamps: true
 });
