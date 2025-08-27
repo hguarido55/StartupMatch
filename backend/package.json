@@ -14,6 +14,7 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
+    "nodemailer": "^7.0.5",
     "startupmatch": "file:..",
     "stream-chat": "^8.60.0"
   },

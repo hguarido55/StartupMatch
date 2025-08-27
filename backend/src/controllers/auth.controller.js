@@ -1,9 +1,10 @@
 import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import brevoClient from "../lib/brevo.js";
+
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
+import { sendResetEmail } from "../lib/mailer.js";
 
 // Lógica de funciones de autenticación (registro, login, logout)
 
@@ -177,38 +178,30 @@ export async function onboard(req, res) {
 }
 
 export async function forgotPassword(req, res) {
-    const {email} = req.body;
-    if (!email) {
-        return res.status(400).json({ message: "Email is required" });
-    }
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email is required" });
 
-    try {
-        const user = await User.findOne({email});
-        if(!user) {
-            return res.status(404).json({ message: "Email not found" });
-        }
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
 
-        const token = crypto.randomBytes(32).toString("hex");
-        user.resetToken = token;
-        user.resetTokenExpire = Date.now() + 3600000; // 1 hora
+    // Crear token y expiración
+    const token = crypto.randomBytes(32).toString("hex");
+    user.resetToken = token;
+    user.resetTokenExpire = Date.now() + 3600000; // 1 hora
 
-        await user.save();
+    await user.save();
 
-        const resetLink = `http://localhost:5005/reset-password/${token}`;
+    const resetLink = `http://localhost:5005/reset-password/${token}`;
 
-        await brevoClient.sendTransacEmail({
-            sender: { name: "StartupMatch", email: "no-reply@startupmatch.com" },
-            to: [{ email: user.email }],
-            subject: "Reset your password",
-            htmlContent: `<p>Hi ${user.fullName},</p>
-                            <p>Click <a href="${resetLink}">here</a> to reset your password. This link will expire in 1 hour.</p>`
-            });
+    // Enviar email usando nodemailer
+    await sendResetEmail(user.email, resetLink, user.fullName);
 
-        res.status(200).json({ message: "Verification email sent successfully" });
-    } catch (error) {
-        console.error("Error in forgotPassword controller:", error);
-        res.status(500).json({ message: "Unable to send verification email" });
-    }
+    res.status(200).json({ message: "Verification email sent successfully" });
+  } catch (error) {
+    console.error("Error in forgotPassword controller:", error);
+    res.status(500).json({ message: "Unable to send verification email" });
+  }
 }
 
 export async function resetPassword(req, res) {
