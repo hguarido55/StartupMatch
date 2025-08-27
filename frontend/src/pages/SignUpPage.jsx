@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserPlus } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useSignUp from '../hooks/useSignUp';
 
 const SignupPage = () => {
@@ -11,11 +11,16 @@ const SignupPage = () => {
   });
 
   const {error, isPending, signupMutation} = useSignUp();
+  const navigate = useNavigate();
 
-  const handleSignup = (e) => {
-    e.preventDefault();
-    signupMutation(signupData);
-  }
+ const handleSignup = (e) => {
+  e.preventDefault();
+  signupMutation(signupData, {
+    onSuccess: () => {
+      navigate("/onboarding");
+    }
+  });
+}
   
   return (
     <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="synthwave">
