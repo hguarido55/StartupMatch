@@ -10,6 +10,7 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
+    "startupmatch": "file:..",
     "stream-chat": "^8.60.0"
   },
   "devDependencies": {
@@ -17,7 +18,8 @@
   },
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,21 @@
+{
+  "name": "startupmatch",
+  "version": "1.0.0",
+  "description": "**StartupMatch** es una aplicación web full-stack creada con **MERN** que conecta a emprendedores, CEOs y equipos de startups con desarrolladores y profesionales interesados en colaborar.  \r La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación directa mediante chat y videollamadas.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hguarido55/StartupMatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hguarido55/StartupMatch/issues"
+  },
+  "homepage": "https://github.com/hguarido55/StartupMatch#readme"
+}
