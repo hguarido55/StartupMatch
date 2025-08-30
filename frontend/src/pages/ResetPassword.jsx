@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { KeyRound } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../lib/api.js";
 
 const ResetPasswordPage = () => {

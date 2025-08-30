@@ -192,7 +192,7 @@ export async function forgotPassword(req, res) {
 
     await user.save();
 
-    const resetLink = `http://localhost:5005/reset-password/${token}`;
+    const resetLink = `http://localhost:5173/reset-password/${token}`;
 
     // Enviar email usando nodemailer
     await sendResetEmail(user.email, resetLink, user.fullName);
@@ -210,6 +210,10 @@ export async function resetPassword(req, res) {
 
     if(!newPassword) {
         return res.status(400).json({ message: "New password is required" });
+    }
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters long" });
     }
 
     try {

@@ -35,9 +35,11 @@ export const forgotPassword = async (data) => {
   return response.data;
 };
 
-export const resetPassword = async (token) => {
-    const response = await axiosInstance.post(`/auth/reset-password/${token}`);
-    return response.data;
+export const resetPassword = async (token, newPassword) => {
+  const response = await axiosInstance.post(`/auth/reset-password/${token}`, {
+    newPassword,
+  });
+  return response.data;
 };
 
 export async function getUserFriends() {
