@@ -19,18 +19,7 @@ La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación d
 - **Despliegue en la nube:** Utiliza [Render](https://render.com) para la puesta en producción.
 - **Frontend interactivo:** Construido con React.js para una experiencia de usuario fluida.
 - **Backend robusto:** API REST desarrollada con Node.js y Express.
-
----
-
-## 🔮 Funcionalidades adicionales previstas
-
-- **Mailtrap** para envío de correos de:
-  - Recuperación de contraseñas.
-  - Confirmación de registro de cuenta.
-  - Notificaciones de actividad.
-- **OAuth** para autenticación con Google, GitHub y otros proveedores.
-- Sistema de recomendaciones de usuarios/proyectos basado en intereses y habilidades.
-- Integración de notificaciones en tiempo real (WebSockets).
+- **Verificación por correo:** Integración con Nodemailer para recuperación de contraseñas mediante correo electrónico
 
 ---
 
@@ -51,9 +40,8 @@ La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación d
 
 ### Integraciones y servicios
 - **getstream.io (Stream)** – API para chat y videollamadas.
+- **Nodemailer** – Testing de correos electrónicos.
 - **Render** – Despliegue de la aplicación.
-- **Mailtrap** *(futuro)* – Testing de correos electrónicos.
-- **OAuth** *(futuro)* – Autenticación con proveedores externos.
 
 ## Pruebas 
 - **Postman** - Durante el desarrollo local se utilizó Postman para probar y depurar los endpoints de la API, ejecutando y verificando peticiones HTTP (GET, POST, PUT, DELETE, etc.) de forma rápida antes de su integración con el frontend.
