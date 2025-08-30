@@ -12,6 +12,7 @@ import PageLoader from './components/PageLoader.jsx';
 import useAuthUser from './hooks/useAuthUser.js';
 import Layout from './components/Layout.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPasswordPage from './pages/ResetPassword.jsx';
 
 const App = () => {
   const {isLoading, authUser} = useAuthUser();
@@ -62,6 +63,10 @@ const App = () => {
         <Route 
           path="/forgot-password" 
           element={!isAuthenticated ? <ForgotPassword /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} /> } 
+        />
+        <Route
+          path="/reset-password/:token"
+          element={!isAuthenticated ? <ResetPasswordPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
         />
       </Routes>
 
