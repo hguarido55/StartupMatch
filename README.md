@@ -20,6 +20,7 @@ La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación d
 - **Frontend interactivo:** Construido con React.js para una experiencia de usuario fluida.
 - **Backend robusto:** API REST desarrollada con Node.js y Express.
 - **Verificación por correo:** Integración con Nodemailer para recuperación de contraseñas mediante correo electrónico
+- **Supabase** Integración con buckets en Supabase para almacenar ficheros (imagenes, etc.)
 
 ---
 
@@ -41,6 +42,7 @@ La plataforma facilita el desarrollo de proyectos conjuntos y la comunicación d
 ### Integraciones y servicios
 - **getstream.io (Stream)** – API para chat y videollamadas.
 - **Nodemailer** – Testing de correos electrónicos.
+- **Supabase** - Buckets y servicios backend
 - **Render** – Despliegue de la aplicación.
 
 ## Pruebas 
