@@ -3,9 +3,10 @@ import useAuthUser from "../hooks/useAuthUser";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "../lib/api";
 import toast from "react-hot-toast";
-import { CameraIcon, LoaderIcon, MapPinIcon, Send, ShuffleIcon } from "lucide-react";
+import { CameraIcon, LoaderIcon, MapPinIcon, Send, ShuffleIcon, Upload } from "lucide-react";
 import { LANGUAGES } from "../constants";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 const ProfilePage = () => {
   const { authUser } = useAuthUser();
@@ -39,12 +40,34 @@ const ProfilePage = () => {
     updateProfileMutation(formState);
   };
 
-  const handleRandomAvatar = () => {
-    const idx = Math.floor(Math.random() * 100) + 1;
-    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
-    setFormState({ ...formState, profilePic: randomAvatar });
-    toast.success("Avatar changed successfully!");
-  };
+  const handleFileUpload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    // Extraer extensión y generar nombre único (por ID de usuario)
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${authUser._id}.${fileExt}`;
+
+    // Subir archivo al bucket profile-pics
+    const { error } = await supabase.storage
+      .from("profile-pics")
+      .upload(fileName, file, { upsert: true });
+
+    if (error) throw error;
+
+    // Obtener URL pública del archivo
+    const { data } = supabase.storage.from("profile-pics").getPublicUrl(fileName);
+
+    // Actualizar el formState
+    setFormState({ ...formState, profilePic: data.publicUrl });
+
+    toast.success("Profile picture uploaded!");
+  } catch (error) {
+    console.error("Upload error:", error);
+    toast.error("Failed to upload picture");
+  }
+};
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 flex-1 overflow-y-auto">
@@ -56,30 +79,33 @@ const ProfilePage = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Avatar */}
             <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="size-32 rounded-full bg-base-300 overflow-hidden">
-                {formState.profilePic ? (
-                  <img
-                    src={formState.profilePic}
-                    alt="Profile Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <CameraIcon className="size-12 text-base-content opacity-40" />
-                  </div>
-                )}
-              </div>
+                <div className="size-32 rounded-full bg-base-300 overflow-hidden">
+                    {formState.profilePic ? (
+                    <img
+                        src={formState.profilePic}
+                        alt="Profile Preview"
+                        className="w-full h-full object-cover"
+                    />
+                    ) : (
+                    <div className="flex items-center justify-center h-full">
+                        <CameraIcon className="size-12 text-base-content opacity-40" />
+                    </div>
+                    )}
+                </div>
 
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleRandomAvatar}
-                  className="btn btn-accent"
-                >
-                  <ShuffleIcon className="size-4 mr-2" />
-                  Generate Random Avatar
-                </button>
-              </div>
+                <label className="btn btn-accent cursor-pointer">
+                    <Upload className="size-4 mr-2" />
+                    Upload Profile Picture
+                    <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    />
+                </label>
+            </div>
+
             </div>
 
             {/* Full Name */}
