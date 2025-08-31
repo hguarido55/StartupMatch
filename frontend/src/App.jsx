@@ -14,6 +14,7 @@ import Layout from './components/Layout.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPasswordPage from './pages/ResetPassword.jsx';
 import LandingPage from './pages/LandingPage.jsx';
+import FriendsPage from './pages/FriendPage.jsx';
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
@@ -118,6 +119,17 @@ const App = () => {
               ? <ResetPasswordPage />
               : <Navigate to={isOnboarded ? "/home" : "/onboarding"} />
           }
+        />
+
+        <Route
+          path="/friends"
+          element={isAuthenticated && isOnboarded ? (
+            <Layout showSidebar={true}>
+              <FriendsPage />
+            </Layout>
+          ) : (
+            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+          )}
         />
       </Routes>
 
