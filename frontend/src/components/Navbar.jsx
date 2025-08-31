@@ -17,7 +17,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-end w-full">
                     {isChatPage && (
                         <div className="pl-5">
-                            <Link to="/" className="flex items-center gap-2.5">
+                            <Link to="/home" className="flex items-center gap-2.5">
                                 <RocketIcon className="size-9 text-primary" />
                                 <span className="text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
                                     StartupMatch
