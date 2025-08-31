@@ -15,6 +15,7 @@ import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPasswordPage from './pages/ResetPassword.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import FriendsPage from './pages/FriendPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
@@ -126,6 +127,17 @@ const App = () => {
           element={isAuthenticated && isOnboarded ? (
             <Layout showSidebar={true}>
               <FriendsPage />
+            </Layout>
+          ) : (
+            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+          )}
+        />
+
+        <Route
+          path="/profile"
+          element={isAuthenticated && isOnboarded ? (
+            <Layout showSidebar={true}>
+              <ProfilePage />
             </Layout>
           ) : (
             <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
