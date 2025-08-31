@@ -81,3 +81,8 @@ export async function removeFriend (friendId) {
   const response = await axiosInstance.delete(`/users/friend/${friendId}`);
   return response.data;
 };
+
+export async function updateProfile(profileData) {
+  const response = await axiosInstance.put("/users/profile", profileData);
+  return response.data;
+};

@@ -180,4 +180,4 @@ const OnboardingPage = () => {
   )
 }
 
-export default OnboardingPage
+export default OnboardingPage;

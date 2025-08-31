@@ -183,3 +183,37 @@ export async function removeFriend(req, res) {
     res.status(500).json({ message: "Failed to remove friend" });
   }
 }
+
+export async function updateProfile(req, res) {
+    try {
+        const userId = req.user.id;
+        const { fullName, bio, nativeLanguage, learningLanguage, location, profilePic } = req.body;
+
+        if(!userId) {
+            return res.status(400).json({ message: "Request error" });
+        } 
+
+        const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+            fullName,
+            bio,
+            nativeLanguage,
+            learningLanguage,
+            location,
+            profilePic,
+            isOnboarded: true,
+        },
+        { new: true, runValidators: true }
+        ).select("-password");
+
+        if(!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "Profile updated successfully" });
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ message: "Failed to update profile "});
+    }
+}

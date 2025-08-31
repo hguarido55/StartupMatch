@@ -1,6 +1,6 @@
 import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
-import { acceptFriendRequest, getFriendRequests, getMyFriends, getOutgoingFriendReqs, getRecommendedUsers, removeFriend, sendFriendRequest } from "../controllers/user.controller.js";
+import { acceptFriendRequest, getFriendRequests, getMyFriends, getOutgoingFriendReqs, getRecommendedUsers, removeFriend, sendFriendRequest, updateProfile } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -17,5 +17,8 @@ router.get("/outgoing-friend-requests", getOutgoingFriendReqs);
 
 // Eliminar amigo desde FriendCard
 router.delete("/friend/:id", removeFriend);
+
+// Actualizar perfil en página 'Profile'
+router.put("/profile", updateProfile);
 
 export default router;
