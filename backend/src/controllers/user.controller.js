@@ -150,3 +150,36 @@ export async function getOutgoingFriendReqs (req, res) {
         res.status(500).json({ message: "Error interno" });
     }
 };
+
+export async function removeFriend(req, res) {
+  try {
+    const userId = req.user._id;       // usuario autenticado
+    const friendId = req.params.id;    // amigo a eliminar
+
+    if (!friendId) {
+      return res.status(400).json({ message: "Friend ID is required" });
+    }
+
+    // Verificar que el amigo existe
+    const friend = await User.findById(friendId);
+    if (!friend) {
+      return res.status(404).json({ message: "Friend not found" });
+    }
+
+    // Quitar la relación de amistad de ambos usuarios
+    await User.updateOne(
+      { _id: userId },
+      { $pull: { friends: friendId } }
+    );
+
+    await User.updateOne(
+      { _id: friendId },
+      { $pull: { friends: userId } }
+    );
+
+    res.status(200).json({ message: "Friend removed successfully" });
+  } catch (error) {
+    console.error("Error removing friend:", error);
+    res.status(500).json({ message: "Failed to remove friend" });
+  }
+}
